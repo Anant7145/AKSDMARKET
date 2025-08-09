@@ -1,0 +1,93 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart</title>
+<style>
+body { font-family: Arial; padding: 20px; background: #f5f5f5; margin: 0; }
+.cart-item { background: white; padding: 10px; margin-bottom: 10px; display: flex; align-items: center; border-radius: 8px; flex-wrap: wrap; }
+.cart-item img { width: 80px; height: 80px; object-fit: cover; margin-right: 15px; border-radius: 8px; }
+button { background: red; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+.checkout { background: green; padding: 10px 15px; margin-top: 15px; }
+input[type="number"] { width: 60px; }
+@media (max-width: 480px) {
+    body { padding: 10px; }
+    .cart-item { flex-direction: column; align-items: flex-start; }
+    .cart-item img { margin-bottom: 10px; }
+}
+</style>
+</head>
+<body>
+    <img src="https://i.postimg.cc/bwS9nLLB/Screenshot-2025-08-08-074530.png" alt="icon">
+
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
+<button onclick="goBack()">⬅ Back to Shop</button>
+<button class="checkout" onclick="checkout()">Proceed to Checkout</button>
+
+<script>
+// Get cart data from localStorage
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// Show cart items
+function loadCart() {
+    let list = "";
+    let total = 0;
+    if (cart.length === 0) {
+        list = "<p>Your cart is empty.</p>";
+    } else {
+        cart.forEach((item, index) => {
+            let qty = item.qty || 1;
+            total += item.price * qty;
+            list += `
+            <div class="cart-item">
+                <img src="${item.img}">
+                <div>
+                    <h3>${item.name}</h3>
+                    <p>₹${item.price}</p>
+                    Quantity: <input type="number" min="1" value="${qty}" onchange="updateQuantity(${index}, this.value)">
+                    <button onclick="removeItem(${index})">Remove</button>
+                </div>
+            </div>`;
+        });
+        list += `<h3>Total: ₹${total}</h3>`;
+    }
+    document.getElementById("cartItems").innerHTML = list;
+}
+loadCart();
+
+// Update quantity and save
+function updateQuantity(index, qty) {
+    qty = parseInt(qty);
+    if (qty < 1) qty = 1;
+    cart[index].qty = qty;
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+}
+
+// Remove product from cart
+function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+}
+
+// Back to shop
+function goBack() {
+    window.location.href = "test19.html";
+}
+
+// Checkout
+function checkout() {
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+    } else {
+        localStorage.setItem("cart", JSON.stringify(cart));
+        window.location.href = "checkout.html";
+    }
+}
+</script>
+
+</body>
+</html>

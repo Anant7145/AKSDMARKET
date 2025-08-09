@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+<title>Checkout</title>
+<style>
+body { font-family: Arial; background: #f5f5f5; padding: 20px; }
+.container { background: white; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; }
+input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }
+button { background: green; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
+h2 { text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Checkout</h2>
+    <form action="https://api.web3forms.com/submit" method="POST">
+        <!-- Web3Forms Access Key -->
+        <input type="hidden" name="access_key" value="ee20288f-9257-44fd-b6e1-3bfaf90ae28a">
+
+        <!-- Customer Info -->
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <textarea name="address" placeholder="Full Address" required></textarea>
+
+        <!-- Order Summary -->
+        <textarea name="products" id="productsList" readonly></textarea>
+
+        <button type="submit">Confirm Order</button>
+    </form>
+</div>
+
+<script>
+// Load cart data from localStorage
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let productList = cart.map(item => `${item.name} (₹${item.price} x ${item.qty || 1})`).join(", ");
+document.getElementById("productsList").value = productList;
+</script>
+
+</body>
+</html>

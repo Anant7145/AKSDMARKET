@@ -1,0 +1,107 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    background-color: lightblue;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 400px;
+    width: 90%;
+    margin: 40px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.container img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: none;
+    background-color: #eee;
+    font-size: 15px;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: #5cb3e3;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <img src="https://i.postimg.cc/bwS9nLLB/Screenshot-2025-08-08-074530.png" alt="Logo">
+    <h2 id="formTitle">Login</h2>
+    <form onsubmit="return handleSubmit()">
+        <input type="text" id="user_id" placeholder="Enter User ID">
+        <input type="password" id="password" placeholder="Enter Password">
+        <input type="submit" value="Submit">
+    </form>
+    <p id="toggleText">Don't have an account? <a href="#" onclick="toggleForm()">Sign Up</a></p>
+</div>
+
+<script>
+let isLogin = true;
+
+function toggleForm() {
+    isLogin = !isLogin;
+    document.getElementById("formTitle").innerText = isLogin ? "Login" : "Sign Up";
+    document.getElementById("toggleText").innerHTML = isLogin 
+        ? `Don't have an account? <a href="#" onclick="toggleForm()">Sign Up</a>`
+        : `Already have an account? <a href="#" onclick="toggleForm()">Login</a>`;
+}
+
+function handleSubmit() {
+    let user = document.getElementById("user_id").value;
+    let pass = document.getElementById("password").value;
+
+    if (isLogin) {
+        let savedUser = localStorage.getItem("user_id");
+        let savedPass = localStorage.getItem("password");
+
+        if (user === savedUser && pass === savedPass) {
+            alert("Login Successful!");
+            window.location.href = "test19.html"; // Redirect after login
+        } else {
+            alert("Invalid User ID or Password!");
+        }
+    } else {
+        localStorage.setItem("user_id", user);
+        localStorage.setItem("password", pass);
+        alert("Account Created Successfully! Please Login.");
+        toggleForm();
+    }
+
+    return false;
+}
+</script>
+
+</body>
+</html>
